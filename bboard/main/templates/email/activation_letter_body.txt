@@ -1,0 +1,12 @@
+Dear user {{ user.username }}!
+
+You applied for registration on Bulletin board website.
+(if you didn't do that, just ignor this email)
+You should activate your account.
+Please follow the link below to proceed:
+{{ host }}{% url 'main:register_activate' sign=sign %}
+
+Have a great day!
+
+Sincerely,
+Administration of Bulletin board

@@ -1,11 +1,11 @@
 {% extends "layout/basic.html" %}
 {% load bootstrap4 %}
-{% block title %}Changing personal data{% endblock %}
+{% block title %}Registration{% endblock %}
 {% block content %}
-<h2>Changing personal data for {{ user.username }}</h2>
+<h2>New user's registration</h2>
 <form method="post">
     {% csrf_token %}
     {% bootstrap_form form layout='horizontal' %}
-    {% buttons submit='Save' %}{% endbuttons %}
+    {% buttons submit='Register' %}{% endbuttons %}
 </form>
 {% endblock %}
