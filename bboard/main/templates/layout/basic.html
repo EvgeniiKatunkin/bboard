@@ -22,11 +22,11 @@
             <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
                aria-expanded="false">Profile</a>
             <div class="dropdown-menu">
-                <a class="dropdown-item" href="#">My bulletins</a>
-                <a class="dropdown-item" href="#">Change personal data</a>
+                <a class="dropdown-item" href="{% url 'main:profile' %}">My bulletins</a>
+                <a class="dropdown-item" href="{% url 'main:profile_change' %}">Change personal data</a>
                 <a class="dropdown-item" href="#">Change password</a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Exit</a>
+                <a class="dropdown-item" href="{% url 'main:logout' %}">LogOut</a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="#">Delete</a>
             </div>
