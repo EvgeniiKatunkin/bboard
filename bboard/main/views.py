@@ -80,6 +80,10 @@ class RegisterUserView(CreateView):
     success_url = reverse_lazy('main:register_done')
 
 
+def by_rubric(request, pk):
+    pass
+
+
 def index(request):
     return render(request, 'main/index.html')
 
