@@ -125,7 +125,17 @@ def other_page(request, page):
 
 @login_required
 def profile(request):
-    return render(request, 'main/profile.html')
+    bbs = Bb.objects.filter(author=request.user.pk)
+    context = {'bbs': bbs}
+    return render(request, 'main/profile.html', context)
+
+
+@login_required
+def profile_bb_detail(request, pk):
+    bb = get_object_or_404(Bb, pk=pk)
+    ais = bb.additionalimage_set.all()
+    context = {'bb': bb, 'ais': ais}
+    return render(request, 'main/profile_bb_detail.html', context)
 
 
 def user_activate(request, sign):
