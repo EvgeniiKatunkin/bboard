@@ -4,7 +4,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, LogoutView, PasswordChangeView
 from django.contrib.messages.views import SuccessMessageMixin
+from django.core.paginator import Paginator
 from django.core.signing import BadSignature
+from django.db.models import Q
 from django.http import HttpResponse, Http404
 from django.shortcuts import render, get_object_or_404
 from django.template import TemplateDoesNotExist
@@ -13,8 +15,8 @@ from django.views.generic.base import TemplateView
 from django.views.generic.edit import UpdateView, CreateView, DeleteView
 from django.urls import reverse_lazy
 
-from .forms import ChangeUserInfoForm, RegisterUserForm
-from .models import AdvUser
+from .forms import ChangeUserInfoForm, RegisterUserForm, SearchForm
+from .models import AdvUser, SubRubric, Bb
 from .utilities import signer
 
 
@@ -80,20 +82,43 @@ class RegisterUserView(CreateView):
     success_url = reverse_lazy('main:register_done')
 
 
-def by_rubric(request, pk):
-    pass
-
-
-def index(request):
-    return render(request, 'main/index.html')
-
-
 def other_page(request, page):
     try:
         template = get_template('main/' + page + '.html')
     except TemplateDoesNotExist:
         raise Http404
     return HttpResponse(template.render(request=request))
+
+
+def by_rubric(request, pk):
+    rubric = get_object_or_404(SubRubric, pk=pk)
+    bbs = Bb.objects.filter(is_active=True, rubric=pk)
+    if 'keyword' in request.GET:
+        keyword = request.GET['keyword']
+        q = Q(title__icontains=keyword) | Q(content__icontains=keyword)
+        bbs = bbs.filter(q)
+    else:
+        keyword = ''
+    form = SearchForm(initial={'keyword': keyword})
+    paginator = Paginator(bbs, 2)
+    if 'page' in request.GET:
+        page_num = request.GET['page']
+    else:
+        page_num = 1
+    page = paginator.get_page(page_num)
+    context = {'rubric': rubric, 'page': page, 'bbs': page.object_list, 'form': form}
+    return render(request, 'main/by_rubric.html', context)
+
+
+def detail(request, rubric_pk, pk):
+    bb = get_object_or_404(Bb, pk=pk)
+    ais = bb.additionalimage_set.all()
+    context = {'bb': bb, 'ais': ais}
+    return render(request, 'main/detail.html', context)
+
+
+def index(request):
+    return render(request, 'main/index.html')
 
 
 @login_required

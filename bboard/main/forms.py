@@ -50,6 +50,10 @@ class RegisterUserForm(forms.ModelForm):
         fields = ('username', 'email', 'password1', 'password2', 'first_name', 'last_name', 'send_messages')
 
 
+class SearchForm(forms.Form):
+    keyword = forms.CharField(required=False, max_length=20, label='')
+
+
 class SubRubricForm(forms.ModelForm):
     super_rubric = forms.ModelChoiceField(queryset=SubRubric.objects.all(), empty_label=None, label='Super_rubric',
                                           required=True)
