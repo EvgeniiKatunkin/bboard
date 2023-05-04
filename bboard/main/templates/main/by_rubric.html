@@ -26,7 +26,7 @@
             {% if bb.image %}
             <img class="mr-3" src="{% thumbnail bb.image 'default' %}">
             {% else %}
-            <img class="mr-3" src="{% static 'main/empty.jpg' %}">
+            <img class="mr-3 no_photo" src="{% static 'main/empty.jpg' %}">
             {% endif %}
         </a>
         <div class="media-body">

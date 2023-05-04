@@ -2,14 +2,19 @@ header h1 {
     background: url("bg.jpg") left / auto 100% no-repeat, url("bg.jpg") right / auto 100% no-repeat;
 }
 
+.no_photo {
+     width: 96px;
+     height: 96px;
+}
+
 .root {
     font-size: larger;
 }
 
-img.main-image {
-    width: 300рх;
-}
-
 img.additional-image {
     width: 180px;
+}
+
+img.main-image {
+    width: 300px;
 }

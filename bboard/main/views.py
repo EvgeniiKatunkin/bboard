@@ -82,14 +82,6 @@ class RegisterUserView(CreateView):
     success_url = reverse_lazy('main:register_done')
 
 
-def other_page(request, page):
-    try:
-        template = get_template('main/' + page + '.html')
-    except TemplateDoesNotExist:
-        raise Http404
-    return HttpResponse(template.render(request=request))
-
-
 def by_rubric(request, pk):
     rubric = get_object_or_404(SubRubric, pk=pk)
     bbs = Bb.objects.filter(is_active=True, rubric=pk)
@@ -118,7 +110,17 @@ def detail(request, rubric_pk, pk):
 
 
 def index(request):
-    return render(request, 'main/index.html')
+    bbs = Bb.objects.filter(is_active=True)[:10]
+    context = {'bbs': bbs}
+    return render(request, 'main/index.html', context)
+
+
+def other_page(request, page):
+    try:
+        template = get_template('main/' + page + '.html')
+    except TemplateDoesNotExist:
+        raise Http404
+    return HttpResponse(template.render(request=request))
 
 
 @login_required
