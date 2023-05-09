@@ -1,10 +1,11 @@
+from captcha.fields import CaptchaField
 from django import forms
 from django.contrib.auth import password_validation
 from django.core.exceptions import ValidationError
 from django.forms import inlineformset_factory
 
 from .apps import user_registered
-from .models import AdvUser, SuperRubric, SubRubric, Bb, AdditionalImage
+from .models import AdvUser, SuperRubric, SubRubric, Bb, AdditionalImage, Comment
 
 
 class BbForm(forms.ModelForm):
@@ -72,3 +73,19 @@ class SubRubricForm(forms.ModelForm):
     class Meta:
         model = SubRubric
         fields = '__all__'
+
+
+class UserCommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        exclude = ('is_active',)
+        widgets = {'bb': forms.HiddenInput}
+
+
+class GuestCommentForm(forms.ModelForm):
+    captcha = CaptchaField(label='Input text from the picture', error_messages={'invalid': 'Incorrect input'})
+
+    class Meta:
+        model = Comment
+        exclude = ('is_active',)
+        widgets = {'bb': forms.HiddenInput}
