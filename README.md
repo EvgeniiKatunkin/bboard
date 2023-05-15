@@ -1,1 +1,2 @@
-Bulletin board website with Python and Django
+# Django bulletin board website
+Django bulletin board website
